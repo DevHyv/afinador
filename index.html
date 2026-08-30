@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Afinador Profesional</title>
+  <title>Suite de Guitarra</title>
   <meta name="theme-color" content="#0f0f12">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
   <style>
     * {
@@ -30,18 +30,105 @@
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       padding: 1rem;
       touch-action: manipulation;
+      color: #e8e8f0;
     }
 
-    .tuner-card {
+    .app-card {
       max-width: 720px;
       width: 100%;
       background: #1a1a20;
-      border-radius: 2.5rem;
-      padding: 2rem 1.5rem 2.5rem;
-      box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.04);
-      border: 1px solid #2a2a32;
+      border-radius: 2rem;
+      padding: 1.8rem 1.5rem 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      border: 1px solid #262630;
     }
 
+    /* Pestañas de Navegación */
+    .tab-navigation {
+      display: flex;
+      background: #121216;
+      padding: 0.3rem;
+      border-radius: 1.5rem;
+      margin-bottom: 1.8rem;
+      border: 1px solid #22222c;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 0.7rem 1rem;
+      border-radius: 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #7a7a8e;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .tab-btn.active {
+      background: #262632;
+      color: #f0f0f8;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Controles genéricos */
+    .btn-group {
+      background: #121216;
+      padding: 0.25rem;
+      border-radius: 2rem;
+      display: flex;
+      border: 1px solid #262630;
+    }
+
+    .btn-group button {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 1.5rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #7a7a8e;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .btn-group button.active {
+      background: #2e3a48;
+      color: #f0f8ff;
+    }
+
+    .action-btn {
+      background: #2e3a48;
+      color: #f0f8ff;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 1.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .action-btn:active {
+      opacity: 0.8;
+    }
+
+    .action-btn.listening {
+      background: #4a2e30;
+      color: #ffb0b0;
+    }
+
+    /* Estilos Afinador */
     .tuner-header {
       display: flex;
       align-items: center;
@@ -51,14 +138,10 @@
       gap: 1rem;
     }
 
-    .tuner-header h1 {
+    .tuner-header h1, .section-title {
       font-weight: 600;
-      font-size: 1.6rem;
-      letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #e8e8f0, #b0b0c0);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 1.4rem;
+      color: #e8e8f0;
       user-select: none;
     }
 
@@ -66,104 +149,45 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       gap: 1rem;
       flex-wrap: wrap;
     }
 
-    .btn-group {
-      background: #26262e;
-      padding: 0.25rem;
-      border-radius: 2.5rem;
-      display: flex;
-      border: 1px solid #34343e;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
-    }
-
-    .btn-group button {
-      background: transparent;
-      border: none;
-      padding: 0.5rem 1.2rem;
-      border-radius: 2rem;
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: #8e8e9e;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      letter-spacing: 0.01em;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .btn-group button.active {
-      background: #3d3d4a;
-      color: #f0f0f8;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    }
-
-    .action-btn {
-      background: #2e3a48;
-      color: #f0f8ff;
-      border: 1px solid #5a7a9a;
-      padding: 0.6rem 1.5rem;
-      border-radius: 2rem;
-      font-weight: 600;
-      font-size: 0.9rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 3px 0 #1a2632;
-    }
-
-    .action-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #1a2632;
-    }
-
-    .action-btn.listening {
-      background: #4a2e30;
-      border-color: #9a5a5a;
-      box-shadow: 0 3px 0 #321a1a, 0 0 12px rgba(200, 70, 70, 0.3);
-    }
-
     .note-display {
       background: #121216;
-      border-radius: 3rem;
+      border-radius: 2rem;
       padding: 0.8rem 1.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border: 1px solid #2c2c36;
-      box-shadow: inset 0 4px 8px rgba(0,0,0,0.6);
+      border: 1px solid #22222c;
     }
 
     .note-name {
       font-size: 3rem;
       font-weight: 700;
       color: #f0f0fa;
-      letter-spacing: 0.02em;
       min-width: 4.5rem;
       user-select: none;
     }
 
     .note-frequency {
-      font-size: 1rem;
-      font-weight: 450;
-      color: #a8a8b8;
-      background: #212129;
-      padding: 0.3rem 1rem;
-      border-radius: 3rem;
-      border: 1px solid #363640;
-      letter-spacing: 0.02em;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #9a9ab0;
+      background: #1a1a24;
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
       user-select: none;
     }
 
     .tuner-bar-wrapper {
-      background: #0c0c10;
+      background: #121216;
       border-radius: 100px;
-      height: 10px;
-      margin: 1.5rem 0 0.8rem;
-      border: 1px solid #2c2c36;
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
+      height: 8px;
+      margin: 1.2rem 0 0.6rem;
       position: relative;
       overflow: hidden;
     }
@@ -171,184 +195,330 @@
     .tuner-bar-fill {
       height: 100%;
       width: 50%;
-      background: linear-gradient(90deg, #4f6f8f, #80b0d0, #4f6f8f);
+      background: #5a7a9a;
       border-radius: 100px;
       transition: width 0.1s ease-out, background 0.3s ease;
-      box-shadow: 0 0 16px rgba(100, 170, 220, 0.3);
     }
 
     .tuner-bar-fill.in-tune {
-      background: linear-gradient(90deg, #3a7a4a, #60c080, #3a7a4a);
-      box-shadow: 0 0 16px rgba(100, 220, 120, 0.4);
+      background: #4ab870;
     }
 
     .cent-indicator {
       display: flex;
       justify-content: space-between;
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 500;
-      color: #6a6a7a;
+      color: #5a5a6e;
       padding: 0 0.2rem;
-      margin-top: 0.1rem;
-      letter-spacing: 0.02em;
       user-select: none;
     }
 
     .cent-value {
       text-align: center;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 600;
-      color: #d0d0de;
-      margin: 0.2rem 0 0.1rem;
-      background: #15151c;
+      color: #b0b0c0;
+      background: #121216;
       padding: 0.2rem 0.8rem;
-      border-radius: 3rem;
+      border-radius: 2rem;
       display: inline-block;
-      border: 1px solid #2f2f3a;
-      min-width: 80px;
+      min-width: 70px;
       user-select: none;
-      transition: color 0.3s ease;
     }
-    
+
     .cent-value.in-tune {
-      color: #60c080;
+      color: #4ab870;
     }
 
     .cent-container {
       display: flex;
       justify-content: center;
-      margin: 0.4rem 0 1.5rem;
+      margin: 0.4rem 0 1.2rem;
     }
 
     .strings-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 0.6rem;
-      margin-top: 1.5rem;
+      margin-top: 1.2rem;
     }
 
     .string-btn {
-      background: #1e1e26;
-      border: 1px solid #2e2e3a;
-      border-radius: 2rem;
-      padding: 0.8rem 0.3rem;
+      background: #121216;
+      border: 1px solid #22222c;
+      border-radius: 1.5rem;
+      padding: 0.7rem 0.3rem;
       font-weight: 600;
-      font-size: 1rem;
-      color: #c8c8d6;
+      font-size: 0.95rem;
+      color: #a0a0b0;
       cursor: pointer;
       transition: all 0.15s ease;
       font-family: 'Inter', sans-serif;
-      box-shadow: 0 3px 0 #0b0b0e;
-      letter-spacing: 0.02em;
       text-align: center;
-      pointer-events: none; /* Disabled in auto mode */
+      pointer-events: none;
     }
 
     .string-btn.manual-active {
       pointer-events: auto;
     }
 
-    .string-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 #0b0b0e;
-    }
-
     .string-btn.active-string {
-      background: #2e3a48;
-      border-color: #5a7a9a;
+      background: #262634;
+      border-color: #4a5a70;
       color: #f0f8ff;
-      box-shadow: 0 3px 0 #1a2632, 0 0 12px rgba(70, 140, 200, 0.3);
     }
 
     .string-btn .string-note {
       display: block;
       font-size: 0.65rem;
       font-weight: 400;
-      color: #7a7a8e;
+      color: #6a6a7e;
       margin-top: 0.2rem;
-      letter-spacing: 0.04em;
-    }
-
-    .string-btn.active-string .string-note {
-      color: #b0c8e0;
     }
 
     .status-message {
       text-align: center;
-      margin-top: 2rem;
-      font-weight: 450;
-      color: #8a8a9e;
-      background: #18181f;
+      margin-top: 1.5rem;
+      font-weight: 500;
+      color: #7a7a8e;
+      background: #121216;
       padding: 0.6rem 1.2rem;
-      border-radius: 3rem;
-      border: 1px solid #2a2a34;
-      font-size: 0.9rem;
-      letter-spacing: 0.02em;
+      border-radius: 2rem;
+      font-size: 0.85rem;
       user-select: none;
     }
 
-    .status-message span {
-      color: #d0d0e6;
-      font-weight: 500;
+    /* Estilos Transpositor */
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #9a9ab0;
+      margin-bottom: 0.4rem;
+    }
+
+    .form-control {
+      width: 100%;
+      background: #121216;
+      border: 1px solid #22222c;
+      border-radius: 1.2rem;
+      padding: 0.8rem 1rem;
+      color: #f0f0fa;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: #3e4e60;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 90px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .primary-btn {
+      width: 100%;
+      background: #2e3a48;
+      color: #f0f8ff;
+      border: none;
+      padding: 0.9rem;
+      border-radius: 1.2rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      margin-top: 0.5rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .primary-btn:active {
+      opacity: 0.8;
+    }
+
+    .result-box {
+      margin-top: 1.2rem;
+      padding: 1rem;
+      background: #121216;
+      border-radius: 1.2rem;
+      border: 1px solid #22222c;
+      font-family: monospace;
+      font-size: 1.1rem;
+      color: #60c080;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-weight: 600;
+      min-height: 50px;
     }
 
     @media (max-width: 480px) {
-      .tuner-card { padding: 1.5rem 1rem; }
-      .note-name { font-size: 2.4rem; }
-      .strings-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
-      .btn-group button { padding: 0.4rem 1rem; font-size: 0.8rem; }
-      .tuner-header h1 { font-size: 1.3rem; }
-      .controls-row { justify-content: center; }
-    }
-
-    @media (min-width: 768px) {
-      .strings-grid { grid-template-columns: repeat(3, 1fr); }
+      .app-card { padding: 1.2rem 1rem; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .strings-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 <body>
-  <div class="tuner-card">
-    <div class="tuner-header">
-      <h1>Afinador</h1>
-      <div class="btn-group" id="instrumentSelector">
-        <button class="active" data-instrument="guitar">Guitarra</button>
-        <button data-instrument="bass">Bajo</button>
+  <div class="app-card">
+    <div class="tab-navigation">
+      <button class="tab-btn active" onclick="switchTab('tunerTab', this)">Afinador</button>
+      <button class="tab-btn" onclick="switchTab('transposeTab', this)">Transpositor</button>
+    </div>
+
+    <div id="tunerTab" class="tab-content active">
+      <div class="tuner-header">
+        <h1 class="section-title">Afinador</h1>
+        <div class="btn-group" id="instrumentSelector">
+          <button class="active" data-instrument="guitar">Guitarra</button>
+          <button data-instrument="bass">Bajo</button>
+        </div>
+      </div>
+
+      <div class="controls-row">
+        <button id="micBtn" class="action-btn">Activar Micrófono</button>
+        <div class="btn-group" id="modeSelector">
+          <button class="active" data-mode="auto">Automático</button>
+          <button data-mode="manual">Manual</button>
+        </div>
+      </div>
+
+      <div class="note-display">
+        <span class="note-name" id="noteName">-</span>
+        <span class="note-frequency" id="noteFreq">0.0 Hz</span>
+      </div>
+
+      <div class="tuner-bar-wrapper">
+        <div class="tuner-bar-fill" id="tunerBar" style="width: 50%;"></div>
+      </div>
+      <div class="cent-indicator">
+        <span>−50</span>
+        <span>0</span>
+        <span>+50</span>
+      </div>
+      <div class="cent-container">
+        <span class="cent-value" id="centValue">--</span>
+      </div>
+
+      <div class="strings-grid" id="stringsContainer"></div>
+
+      <div class="status-message" id="statusMessage">
+        Esperando micrófono...
       </div>
     </div>
 
-    <div class="controls-row">
-      <button id="micBtn" class="action-btn">Activar Micrófono</button>
-      <div class="btn-group" id="modeSelector">
-        <button class="active" data-mode="auto">Automático</button>
-        <button data-mode="manual">Manual</button>
+    <div id="transposeTab" class="tab-content">
+      <h1 class="section-title" style="margin-bottom: 1.2rem;">Transpositor de Acordes</h1>
+
+      <div class="form-group">
+        <label for="chords">Acordes de entrada</label>
+        <textarea id="chords" class="form-control" rows="3">Sol  Mim  Lam  Re7</textarea>
       </div>
-    </div>
 
-    <div class="note-display">
-      <span class="note-name" id="noteName">-</span>
-      <span class="note-frequency" id="noteFreq">0.0 Hz</span>
-    </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label for="fromKey">Tonalidad actual</label>
+          <select id="fromKey" class="form-control"></select>
+        </div>
+        <div class="form-group">
+          <label for="toKey">Nueva tonalidad</label>
+          <select id="toKey" class="form-control"></select>
+        </div>
+      </div>
 
-    <div class="tuner-bar-wrapper">
-      <div class="tuner-bar-fill" id="tunerBar" style="width: 50%;"></div>
-    </div>
-    <div class="cent-indicator">
-      <span>−50</span>
-      <span>0</span>
-      <span>+50</span>
-    </div>
-    <div class="cent-container">
-      <span class="cent-value" id="centValue">--</span>
-    </div>
+      <div class="form-group">
+        <label for="outputFormat">Formato de nota</label>
+        <select id="outputFormat" class="form-control">
+          <option value="es">Español (Do, Re, Mi...)</option>
+          <option value="en">Anglo (C, D, E...)</option>
+        </select>
+      </div>
 
-    <div class="strings-grid" id="stringsContainer"></div>
+      <button class="primary-btn" onclick="transpose()">Transponer Acordes</button>
 
-    <div class="status-message" id="statusMessage">
-      <span>⏸</span> Esperando micrófono...
+      <div class="form-group" style="margin-top: 1.2rem;">
+        <label>Resultado</label>
+        <div class="result-box" id="output">Do  Lam  Rem  Sol7</div>
+      </div>
     </div>
   </div>
 
   <script>
+    // --- NAVEGACIÓN DE PESTAÑAS ---
+    function switchTab(tabId, element) {
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      element.classList.add('active');
+    }
+
+    // --- LÓGICA DEL TRANSPOSITOR ---
+    const notesES = ["Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si"];
+    const notesEN = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+    
+    const noteMap = {
+      'C':0, 'DO':0,
+      'C#':1, 'DB':1, 'DO#':1, 'REB':1,
+      'D':2, 'RE':2,
+      'D#':3, 'EB':3, 'RE#':3, 'MIB':3,
+      'E':4, 'MI':4,
+      'F':5, 'FA':5,
+      'F#':6, 'GB':6, 'FA#':6, 'SOLB':6,
+      'G':7, 'SOL':7,
+      'G#':8, 'AB':8, 'SOL#':8, 'LAB':8,
+      'A':9, 'LA':9,
+      'A#':10, 'BB':10, 'LA#':10, 'SIB':10,
+      'B':11, 'SI':11
+    };
+
+    const fromSelect = document.getElementById('fromKey');
+    const toSelect = document.getElementById('toKey');
+    
+    notesES.forEach((note, i) => {
+      fromSelect.options.add(new Option(`${note} / ${notesEN[i]}`, i));
+      toSelect.options.add(new Option(`${note} / ${notesEN[i]}`, i));
+    });
+    
+    fromSelect.selectedIndex = 7;
+    toSelect.selectedIndex = 0;
+
+    function transpose() {
+      const from = parseInt(fromSelect.value);
+      const to = parseInt(toSelect.value);
+      const shift = (to - from + 12) % 12;
+      const format = document.getElementById('outputFormat').value;
+      const targetArray = format === 'es' ? notesES : notesEN;
+      
+      const input = document.getElementById('chords').value;
+      const regex = /(Sol#|Solb|Sol|Do#|Reb|Do|Re#|Mib|Re|Mi|Fa#|Solb|Fa|La#|Sib|Lab|La|Si|C#|Db|C|D#|Eb|D|E|F#|Gb|F|G#|Ab|G|A#|Bb|A|B)/gi;
+      
+      const transposed = input.replace(regex, (match) => {
+        const key = match.toUpperCase();
+        if (noteMap[key] !== undefined) {
+          const originalIdx = noteMap[key];
+          const newIdx = (originalIdx + shift) % 12;
+          return targetArray[newIdx];
+        }
+        return match;
+      });
+      
+      document.getElementById('output').innerText = transposed;
+    }
+
+    // --- LÓGICA DEL AFINADOR ---
     (function() {
       const GUITAR_STRINGS = [
         { note: 'E', freq: 82.41, label: '6ª' },
@@ -368,10 +538,9 @@
 
       let currentInstrument = 'guitar';
       let currentStrings = GUITAR_STRINGS;
-      let tuningMode = 'auto'; // 'auto' o 'manual'
+      let tuningMode = 'auto';
       let activeStringIndex = 0;
       
-      // Audio API Variables
       let audioContext;
       let analyser;
       let microphone;
@@ -380,7 +549,6 @@
       const bufferSize = 2048;
       let buffer = new Float32Array(bufferSize);
 
-      // DOM Elements
       const noteNameEl = document.getElementById('noteName');
       const noteFreqEl = document.getElementById('noteFreq');
       const tunerBar = document.getElementById('tunerBar');
@@ -391,7 +559,6 @@
       const modeBtns = document.querySelectorAll('#modeSelector button');
       const micBtn = document.getElementById('micBtn');
 
-      // --- ALGORITMO DE AUTOCORRELACIÓN (Pitch Detection) ---
       function autoCorrelate(buf, sampleRate) {
         let SIZE = buf.length;
         let rms = 0;
@@ -401,7 +568,7 @@
           rms += val * val;
         }
         rms = Math.sqrt(rms / SIZE);
-        if (rms < 0.01) return -1; 
+        if (rms < 0.01) return -1;
 
         let r1 = 0, r2 = SIZE - 1, thres = 0.2;
         for (let i = 0; i < SIZE / 2; i++)
@@ -457,7 +624,7 @@
       }
 
       function updateDisplay(detectedFreq) {
-        if (detectedFreq === -1) return; // Silencio o ruido no afinable
+        if (detectedFreq === -1) return;
 
         let targetNote, targetFreq, targetIndex;
 
@@ -506,7 +673,7 @@
           noteSpan.textContent = str.note;
           const labelSpan = document.createElement('span');
           labelSpan.className = 'string-note';
-          labelSpan.textContent = str.label + '  ' + str.freq.toFixed(1) + 'Hz';
+          labelSpan.textContent = str.label + ' ' + str.freq.toFixed(1) + 'Hz';
           
           btn.appendChild(noteSpan);
           btn.appendChild(labelSpan);
@@ -546,7 +713,7 @@
           cancelAnimationFrame(animationId);
           micBtn.textContent = 'Activar Micrófono';
           micBtn.classList.remove('listening');
-          statusMsg.innerHTML = `<span>⏸</span> Micrófono pausado`;
+          statusMsg.textContent = 'Micrófono pausado';
           isListening = false;
           return;
         }
@@ -573,13 +740,13 @@
 
           micBtn.textContent = 'Detener';
           micBtn.classList.add('listening');
-          statusMsg.innerHTML = `<span>▶</span> Escuchando...`;
+          statusMsg.textContent = 'Escuchando...';
           isListening = true;
           updatePitch();
 
         } catch (err) {
           console.error(err);
-          statusMsg.innerHTML = `<span style="color: #ff5555;">✖</span> Permiso de micrófono denegado`;
+          statusMsg.textContent = 'Permiso de micrófono denegado';
         }
       }
 
@@ -594,10 +761,9 @@
         }
       }
 
-      function init() {
+      function initTuner() {
         renderStrings();
 
-        // Instrument Selection
         instrumentBtns.forEach(btn => {
           btn.addEventListener('click', function() {
             const inst = this.dataset.instrument;
@@ -619,7 +785,6 @@
           });
         });
 
-        // Mode Selection
         modeBtns.forEach(btn => {
           btn.addEventListener('click', function() {
             const mode = this.dataset.mode;
@@ -633,18 +798,17 @@
             
             if (mode === 'manual') {
               setActiveString(0, true);
-              statusMsg.innerHTML = `<span>▶</span> Selecciona la cuerda a afinar`;
+              statusMsg.textContent = 'Selecciona la cuerda a afinar';
             } else {
-              statusMsg.innerHTML = isListening ? `<span>▶</span> Escuchando...` : `<span>⏸</span> Esperando micrófono...`;
+              statusMsg.textContent = isListening ? 'Escuchando...' : 'Esperando micrófono...';
             }
           });
         });
 
-        // Mic Button
         micBtn.addEventListener('click', toggleMicrophone);
       }
 
-      init();
+      initTuner();
     })();
   </script>
 </body>
