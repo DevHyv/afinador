@@ -36,6 +36,10 @@ jobs:
           npx cap init "Afinador" "com.afinador.app" --web-dir www
           npx cap add android
 
+          # Inyectar permisos de micrófono en AndroidManifest.xml
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          sed -i '/<application/i \    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />' $MANIFEST
+
           if [ -f "icon.png" ]; then
             sudo apt-get update && sudo apt-get install -y imagemagick
             
