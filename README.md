@@ -1,0 +1,2 @@
+# afinador
+apk de afinador
