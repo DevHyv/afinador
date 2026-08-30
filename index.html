@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Afinador Profesional</title>
+  <meta name="theme-color" content="#0f0f12">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #0f0f12;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding: 1rem;
+      touch-action: manipulation;
+    }
+
+    .tuner-card {
+      max-width: 720px;
+      width: 100%;
+      background: #1a1a20;
+      border-radius: 2.5rem;
+      padding: 2rem 1.5rem 2.5rem;
+      box-shadow: 0 25px 50px -8px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.04);
+      border: 1px solid #2a2a32;
+    }
+
+    .tuner-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .tuner-header h1 {
+      font-weight: 600;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #e8e8f0, #b0b0c0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      user-select: none;
+    }
+
+    .instrument-selector {
+      background: #26262e;
+      padding: 0.25rem;
+      border-radius: 2.5rem;
+      display: flex;
+      border: 1px solid #34343e;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .instrument-selector button {
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #8e8e9e;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.01em;
+      font-family: 'Inter', sans-serif;
+      touch-action: manipulation;
+    }
+
+    .instrument-selector button.active {
+      background: #3d3d4a;
+      color: #f0f0f8;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+
+    .note-display {
+      background: #121216;
+      border-radius: 3rem;
+      padding: 0.8rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #2c2c36;
+      box-shadow: inset 0 4px 8px rgba(0,0,0,0.6);
+    }
+
+    .note-name {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #f0f0fa;
+      letter-spacing: 0.02em;
+      min-width: 4.5rem;
+      user-select: none;
+    }
+
+    .note-frequency {
+      font-size: 1rem;
+      font-weight: 450;
+      color: #a8a8b8;
+      background: #212129;
+      padding: 0.3rem 1rem;
+      border-radius: 3rem;
+      border: 1px solid #363640;
+      letter-spacing: 0.02em;
+      user-select: none;
+    }
+
+    .tuner-bar-wrapper {
+      background: #0c0c10;
+      border-radius: 100px;
+      height: 10px;
+      margin: 1.5rem 0 0.8rem;
+      border: 1px solid #2c2c36;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.8);
+      position: relative;
+      overflow: hidden;
+      touch-action: none;
+    }
+
+    .tuner-bar-fill {
+      height: 100%;
+      width: 50%;
+      background: linear-gradient(90deg, #4f6f8f, #80b0d0, #4f6f8f);
+      border-radius: 100px;
+      transition: width 0.1s ease-out;
+      box-shadow: 0 0 16px rgba(100, 170, 220, 0.3);
+    }
+
+    .cent-indicator {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #6a6a7a;
+      padding: 0 0.2rem;
+      margin-top: 0.1rem;
+      letter-spacing: 0.02em;
+      user-select: none;
+    }
+
+    .cent-value {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #d0d0de;
+      margin: 0.2rem 0 0.1rem;
+      background: #15151c;
+      padding: 0.2rem 0.8rem;
+      border-radius: 3rem;
+      display: inline-block;
+      border: 1px solid #2f2f3a;
+      min-width: 80px;
+      user-select: none;
+    }
+
+    .cent-container {
+      display: flex;
+      justify-content: center;
+      margin: 0.4rem 0 1.5rem;
+    }
+
+    .strings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+    }
+
+    .string-btn {
+      background: #1e1e26;
+      border: 1px solid #2e2e3a;
+      border-radius: 2rem;
+      padding: 0.8rem 0.3rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #c8c8d6;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: 'Inter', sans-serif;
+      box-shadow: 0 3px 0 #0b0b0e;
+      letter-spacing: 0.02em;
+      text-align: center;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+    }
+
+    .string-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #0b0b0e;
+    }
+
+    .string-btn.active-string {
+      background: #2e3a48;
+      border-color: #5a7a9a;
+      color: #f0f8ff;
+      box-shadow: 0 3px 0 #1a2632, 0 0 12px rgba(70, 140, 200, 0.3);
+    }
+
+    .string-btn .string-note {
+      display: block;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: #7a7a8e;
+      margin-top: 0.2rem;
+      letter-spacing: 0.04em;
+    }
+
+    .string-btn.active-string .string-note {
+      color: #b0c8e0;
+    }
+
+    .status-message {
+      text-align: center;
+      margin-top: 2rem;
+      font-weight: 450;
+      color: #8a8a9e;
+      background: #18181f;
+      padding: 0.6rem 1.2rem;
+      border-radius: 3rem;
+      border: 1px solid #2a2a34;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      user-select: none;
+    }
+
+    .status-message span {
+      color: #d0d0e6;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .tuner-card { padding: 1.5rem 1rem; }
+      .note-name { font-size: 2.4rem; }
+      .strings-grid { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
+      .instrument-selector button { padding: 0.4rem 1rem; font-size: 0.8rem; }
+      .tuner-header h1 { font-size: 1.3rem; }
+    }
+
+    @media (max-width: 380px) {
+      .note-name { font-size: 2rem; }
+      .note-frequency { font-size: 0.8rem; padding: 0.2rem 0.8rem; }
+      .string-btn { font-size: 0.9rem; padding: 0.6rem 0.2rem; }
+    }
+
+    @media (min-width: 768px) {
+      .strings-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="tuner-card">
+    <div class="tuner-header">
+      <h1>Afinador</h1>
+      <div class="instrument-selector" id="instrumentSelector">
+        <button class="active" data-instrument="guitar">Guitarra</button>
+        <button data-instrument="bass">Bajo</button>
+      </div>
+    </div>
+
+    <div class="note-display">
+      <span class="note-name" id="noteName">E</span>
+      <span class="note-frequency" id="noteFreq">82.4 Hz</span>
+    </div>
+
+    <div class="tuner-bar-wrapper">
+      <div class="tuner-bar-fill" id="tunerBar" style="width: 50%;"></div>
+    </div>
+    <div class="cent-indicator">
+      <span>−50</span>
+      <span>0</span>
+      <span>+50</span>
+    </div>
+    <div class="cent-container">
+      <span class="cent-value" id="centValue">+0</span>
+    </div>
+
+    <div class="strings-grid" id="stringsContainer"></div>
+
+    <div class="status-message" id="statusMessage">
+      <span>▶</span> Toca una cuerda
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const GUITAR_STRINGS = [
+        { note: 'E', freq: 82.41, label: '6ª' },
+        { note: 'A', freq: 110.00, label: '5ª' },
+        { note: 'D', freq: 146.83, label: '4ª' },
+        { note: 'G', freq: 196.00, label: '3ª' },
+        { note: 'B', freq: 246.94, label: '2ª' },
+        { note: 'E', freq: 329.63, label: '1ª' }
+      ];
+
+      const BASS_STRINGS = [
+        { note: 'E', freq: 41.20, label: '4ª' },
+        { note: 'A', freq: 55.00, label: '3ª' },
+        { note: 'D', freq: 73.42, label: '2ª' },
+        { note: 'G', freq: 98.00, label: '1ª' }
+      ];
+
+      let currentInstrument = 'guitar';
+      let currentStrings = GUITAR_STRINGS;
+      let activeStringIndex = 0;
+      let currentNote = 'E';
+      let currentFreq = 82.41;
+
+      const noteNameEl = document.getElementById('noteName');
+      const noteFreqEl = document.getElementById('noteFreq');
+      const tunerBar = document.getElementById('tunerBar');
+      const centValueEl = document.getElementById('centValue');
+      const stringsContainer = document.getElementById('stringsContainer');
+      const statusMsg = document.getElementById('statusMessage');
+      const instrumentBtns = document.querySelectorAll('#instrumentSelector button');
+
+      function updateDisplay(note, freq, centOffset = 0) {
+        const clamped = Math.min(50, Math.max(-50, centOffset));
+        const percent = 50 + (clamped / 100) * 50;
+        tunerBar.style.width = percent + '%';
+        centValueEl.textContent = (clamped > 0 ? '+' : '') + clamped;
+        noteNameEl.textContent = note;
+        noteFreqEl.textContent = freq.toFixed(1) + ' Hz';
+      }
+
+      function renderStrings(stringsArray, activeIdx) {
+        stringsContainer.innerHTML = '';
+        stringsArray.forEach((str, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'string-btn' + (idx === activeIdx ? ' active-string' : '');
+          btn.dataset.index = idx;
+          btn.dataset.note = str.note;
+          btn.dataset.freq = str.freq;
+          
+          const noteSpan = document.createElement('span');
+          noteSpan.textContent = str.note;
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'string-note';
+          labelSpan.textContent = str.label + '  ' + str.freq.toFixed(1) + 'Hz';
+          btn.appendChild(noteSpan);
+          btn.appendChild(labelSpan);
+
+          btn.addEventListener('click', function(e) {
+            const idx = parseInt(this.dataset.index);
+            setActiveString(idx);
+            const randomCent = Math.floor(Math.random() * 21) - 10;
+            const freq = currentStrings[idx].freq;
+            const note = currentStrings[idx].note;
+            currentNote = note;
+            currentFreq = freq;
+            updateDisplay(note, freq, randomCent);
+            statusMsg.innerHTML = `<span>▶</span> Cuerda ${currentStrings[idx].label} · ${note}  (${freq.toFixed(1)} Hz)`;
+            document.querySelectorAll('.string-btn').forEach(b => b.classList.remove('active-string'));
+            this.classList.add('active-string');
+            activeStringIndex = idx;
+          });
+
+          stringsContainer.appendChild(btn);
+        });
+        document.querySelectorAll('.string-btn').forEach((btn, idx) => {
+          if (idx === activeIdx) btn.classList.add('active-string');
+        });
+      }
+
+      function setActiveString(index) {
+        if (index < 0 || index >= currentStrings.length) return;
+        activeStringIndex = index;
+        const str = currentStrings[index];
+        currentNote = str.note;
+        currentFreq = str.freq;
+        updateDisplay(str.note, str.freq, 0);
+        document.querySelectorAll('.string-btn').forEach((btn, idx) => {
+          btn.classList.toggle('active-string', idx === index);
+        });
+        statusMsg.innerHTML = `<span>▶</span> Cuerda ${str.label} · ${str.note}  (${str.freq.toFixed(1)} Hz)`;
+      }
+
+      function setInstrument(instrument) {
+        currentInstrument = instrument;
+        instrumentBtns.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.instrument === instrument);
+        });
+
+        if (instrument === 'guitar') {
+          currentStrings = GUITAR_STRINGS;
+        } else {
+          currentStrings = BASS_STRINGS;
+        }
+
+        activeStringIndex = 0;
+        renderStrings(currentStrings, 0);
+        const first = currentStrings[0];
+        currentNote = first.note;
+        currentFreq = first.freq;
+        updateDisplay(first.note, first.freq, 0);
+        statusMsg.innerHTML = `<span>▶</span> ${instrument === 'guitar' ? 'Guitarra' : 'Bajo'} · ${first.label}  (${first.freq.toFixed(1)} Hz)`;
+      }
+
+      function init() {
+        currentInstrument = 'guitar';
+        currentStrings = GUITAR_STRINGS;
+        activeStringIndex = 0;
+        renderStrings(GUITAR_STRINGS, 0);
+        const first = GUITAR_STRINGS[0];
+        currentNote = first.note;
+        currentFreq = first.freq;
+        updateDisplay(first.note, first.freq, 0);
+        statusMsg.innerHTML = `<span>▶</span> Guitarra · 6ª  (82.4 Hz)`;
+
+        instrumentBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            const inst = this.dataset.instrument;
+            if (inst === currentInstrument) return;
+            setInstrument(inst);
+          });
+        });
+
+        // Simulación de entrada de audio con doble clic
+        noteNameEl.addEventListener('dblclick', function() {
+          const randomOffset = Math.floor(Math.random() * 31) - 15;
+          const str = currentStrings[activeStringIndex];
+          if (str) {
+            updateDisplay(str.note, str.freq, randomOffset);
+            statusMsg.innerHTML = `<span>▶</span> Entrada · ${str.note}  (${str.freq.toFixed(1)} Hz)`;
+          }
+        });
+
+        document.querySelector('.tuner-bar-wrapper').addEventListener('dblclick', function() {
+          const str = currentStrings[activeStringIndex];
+          if (str) {
+            updateDisplay(str.note, str.freq, 0);
+            statusMsg.innerHTML = `<span>▶</span> Afinado · ${str.note}`;
+          }
+        });
+
+        // Prevenir zoom con doble toque
+        document.addEventListener('dblclick', function(e) {
+          e.preventDefault();
+        }, { passive: false });
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
